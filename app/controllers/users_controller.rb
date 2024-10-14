@@ -19,14 +19,20 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    if user_params[:user][:image].nil?
+      @user.image.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'kitten.jpg')), filename: 'kitten.png', content_type: 'image/png')
+    else
+      @user.image.attach(user_params[:user][:image])
+    end
     if @user.save
       # @user.send_activation_email
       # flash[:info] = "Please check your email to activate your account."
       # redirect_to root_url
+      @user.activate
       reset_session
       log_in @user
       flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
+      redirect_to root_url
     else
       render 'new', status: :unprocessable_entity
     end
@@ -69,7 +75,7 @@ class UsersController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :image)
     end
 
     # before フィルタ

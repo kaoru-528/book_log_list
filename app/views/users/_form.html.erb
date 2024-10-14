@@ -12,5 +12,9 @@
     <%= f.label :password_confirmation, "Confirmation" %>
     <%= f.password_field :password_confirmation, class: 'form-control' %>
 
+    <span class="image">
+    <%= f.file_field :image, accept: "imgae/jpeg, image/gif, image/png" %>
+    </span>
+
     <%= f.submit "Update my account", class: "btn btn-primary" %>
   <% end %>
