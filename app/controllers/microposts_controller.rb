@@ -5,14 +5,18 @@ class MicropostsController < ApplicationController
   
     def create
         @micropost = current_user.microposts.build(micropost_params)
-        # @micropost.image.attach(params[:micropost][:image])
-        scraiping(@micropost.content)
-        if @micropost.save
-          flash[:success] = "Micropost created!"
-          redirect_to root_url
+        if@micropost.content.include?("https://www.amazon.co.jp") 
+          scraiping(@micropost.content)
+          if @micropost.save
+            flash[:success] = "Micropost created!"
+            redirect_to root_url
+          else
+            @feed_items = current_user.feed.paginate(page: params[:page])
+            render 'static_pages/home', status: :unprocessable_entity
+          end
         else
-          @feed_items = current_user.feed.paginate(page: params[:page])
-          render 'static_pages/home', status: :unprocessable_entity
+          flash[:danger] = "Invalid url"
+          redirect_to root_url, status: :unprocessable_entity
         end
     end
   
