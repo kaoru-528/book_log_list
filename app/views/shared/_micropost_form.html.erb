@@ -1,7 +1,8 @@
 <%= form_with(model: @micropost) do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
     <div class="field">
-      <%= f.text_area :content, placeholder: "Compose new book" %>
+      <h5>Amazon</h5>
+      <%= f.text_field :content, placeholder: "Type amazon url" %>
     </div>
     <%= f.submit "Post", class: "btn btn-primary" %>
   <% end %>

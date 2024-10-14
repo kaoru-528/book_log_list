@@ -17,5 +17,5 @@ test:
 production:
   <<: *default
   database: book_log_list_production
-  username: postgres
+  username: <%= ENV['BOOK_LOG_LIST_DATABASE_USER'] %>
   password: <%= ENV['BOOK_LOG_LIST_DATABASE_PASSWORD'] %>
