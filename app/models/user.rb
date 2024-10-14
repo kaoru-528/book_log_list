@@ -13,6 +13,10 @@ class User < ApplicationRecord
                                     dependent: :destroy
     has_many :followers, through: :passive_relationships, source: :follower
 
+    has_one_attached :image do |attachable|
+        attachable.variant :display, resize_to_limit: [500, 500]
+    end
+
     attr_accessor :remember_token, :activation_token, :reset_token
     # before_save :downcase_email
     # before_create :create_activation_digest
@@ -23,6 +27,10 @@ class User < ApplicationRecord
                         uniqueness: true
     has_secure_password
     validates :password, presence: true, length: { minimum: 6}, allow_nil: true
+    validates :image, content_type: { in: %w[image/jpeg image/gif image/png],
+                                        message: "must be a valid image format" },
+                size: { less_than: 5.megabytes,
+                         message: "should be less than 5MB" }
     class << self
         def digest(string)
             cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -77,7 +85,7 @@ class User < ApplicationRecord
         # following_ids = "SELECT followed_id FROM relationships WHERE  follower_id = :user_id"
         # Micropost.where("user_id IN (#{following_ids})OR user_id = :user_id", user_id: id).includes(:user, image_attachment: :blob)
         part_of_feed = "relationships.follower_id = :id or microposts.user_id = :id"
-        Micropost.left_outer_joins(user: :followers).where(part_of_feed, id: id).distinct.includes(:user, image_attachment: :blob)
+        Micropost.left_outer_joins(user: :followers).where(part_of_feed, id: id).distinct.includes(:user)
     end
 
     # ユーザーをフォローする
