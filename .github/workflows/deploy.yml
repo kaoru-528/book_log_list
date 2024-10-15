@@ -26,7 +26,7 @@ jobs:
 
       - name: Run database migrations
         run: |
-          bundle exec rake db:migrate RAILS_ENV=production
+          bundle exec rails db:migrate RAILS_ENV=production
 
       - name: Deploy to Server
         env:
