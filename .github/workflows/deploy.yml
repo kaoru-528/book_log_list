@@ -24,9 +24,24 @@ jobs:
           gem install bundler
           bundle install
 
-      - name: Run database migrations
+      - name: Set environment variables
         env:
           SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+          BOOK_LOG_LIST_DATABASE_USER: ${{ secrets.BOOK_LOG_LIST_DATABASE_USER }}
+          BOOK_LOG_LIST_DATABASE_PASSWORD: ${{ secrets.BOOK_LOG_LIST_DATABASE_PASSWORD }}
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+        run: |
+          echo "SECRET_KEY_BASE set"
+          echo "BOOK_LOG_LIST_DATABASE_USER set"
+          echo "BOOK_LOG_LIST_DATABASE_PASSWORD set"
+          echo "DATABASE_HOST set"
+
+      - name: Run migrations
+        env:
+          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+          BOOK_LOG_LIST_DATABASE_USER: ${{ secrets.BOOK_LOG_LIST_DATABASE_USER }}
+          BOOK_LOG_LIST_DATABASE_PASSWORD: ${{ secrets.BOOK_LOG_LIST_DATABASE_PASSWORD }}
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
         run: |
           bundle exec rails db:migrate RAILS_ENV=production
 
