@@ -12,7 +12,3 @@ preload_app!
 plugin :tmp_restart
 # ソケットのバインド
 bind "unix:///home/ubuntu/www/book_log_list/shared/tmp/sockets/puma.sock"
-
-# ソケットファイルのパーミッション設定
-# 必要に応じて以下の行を追加または修正
-umask 0007
