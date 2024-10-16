@@ -21,11 +21,11 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if user_params[:user][:image].nil?
+    if user_params[:image].nil?
       @user.image.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'kitten.jpg')),
                          filename: 'kitten.png', content_type: 'image/png')
     else
-      @user.image.attach(user_params[:user][:image])
+      @user.image.attach(user_params[:image])
     end
     if @user.save
       # @user.send_activation_email
