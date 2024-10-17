@@ -7,7 +7,7 @@ class MicropostsController < ApplicationController
 
   def create
     @micropost = current_user.microposts.build(micropost_params)
-    if @micropost.content.include?('https://www.amazon.co.jp') && @micropost.content.include?('kindle')
+    if @micropost.content.include?('https://www.amazon.co.jp')
       scraiping(@micropost.content)
       if @micropost.save
         flash[:success] = 'Micropost created!'
