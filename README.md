@@ -1,12 +1,14 @@
-# Ruby on Rails チュートリアルのサンプルアプリケーション
-
-これは、次の教材で作られたサンプルアプリケーションです。
-[*Ruby on Rails チュートリアル*](https://railstutorial.jp/)
-（第7版）
-[Michael Hartl](https://www.michaelhartl.com/) 著
-
-## ライセンス
-
-[Ruby on Rails チュートリアル](https://railstutorial.jp/)内にある
-ソースコードはMITライセンスとBeerwareライセンスのもとで公開されています。
-詳細は [LICENSE.md](LICENSE.md) をご覧ください。
+# book_log_list
+Railsチュートリアルのサンプルアプリケーションをベースに読んだ本を共有しあおうアプリケーションです。
+# 技術関連
+## フレームワーク
+- Ruby on Rails
+- - gem
+- - - mechanize(スクレイピング)
+## ミドルウェア
+- PostgreSQL
+- nginx
+## サーバー
+- さくらvps
+## ドメイン
+- お名前.com
