@@ -11,4 +11,4 @@ workers ENV.fetch('WEB_CONCURRENCY', 4)
 preload_app!
 plugin :tmp_restart
 # ソケットのバインド
-bind "unix:///home/ubuntu/www/book_log_list/shared/tmp/sockets/puma.sock"
+# bind "unix:///home/ubuntu/www/book_log_list/shared/tmp/sockets/puma.sock"

@@ -22,6 +22,20 @@ class MicropostsController < ApplicationController
     end
   end
 
+  def edit
+    @micropost = Micropost.find(params[:id])
+  end
+
+  def update
+    @micropost = Micropost.find(params[:id])
+    if @micropost.update(micropost_params)
+      flash[:success] = 'Book log updated'
+      redirect_to root_url
+    else
+      render 'edit', status: :unprocessable_entity
+    end
+  end
+
   def destroy
     @micropost.destroy
     flash[:success] = 'Book Log deleted'
