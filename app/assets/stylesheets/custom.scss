@@ -264,11 +264,16 @@ input {
     padding-top: 0;
   }
   .content {
-    display: block;
+    display: flex;
     margin-left: 60px;
     img {
       display: block;
-      padding: 5px 0;
+      padding: 0 0;
+      position: relative;
+    }
+    .text {
+      margin: 0 0 0 20px;
+      padding: 0;
     }
   }
   .timestamp {
