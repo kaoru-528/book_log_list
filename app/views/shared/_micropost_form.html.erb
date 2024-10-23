@@ -3,6 +3,8 @@
     <div class="field">
       <h5>Amazon</h5>
       <%= f.text_field :content, placeholder: "Type amazon url" %>
+      <h5>Comment</h5>
+      <%= f.text_area :comment, placeholder: "Type your commnet" %>
     </div>
     <%= f.submit "Post", class: "btn btn-primary" %>
   <% end %>
