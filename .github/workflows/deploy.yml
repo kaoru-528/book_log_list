@@ -10,48 +10,66 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - name: SSH to server
+        uses: appleboy/ssh-action@master
         with:
-          ruby-version: 3.2.3 # 使用するRubyのバージョンを指定
-          bundler-cache: true # Bundlerのキャッシュを有効に
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Install dependencies
-        run: |
-          gem install bundler
-          bundle install
+      - name: Pull latest changes
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ./www/book_log_list
+            git pull origin main
 
-      - name: Set environment variables
-        env:
-          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-          BOOK_LOG_LIST_DATABASE_USER: ${{ secrets.BOOK_LOG_LIST_DATABASE_USER }}
-          BOOK_LOG_LIST_DATABASE_PASSWORD: ${{ secrets.BOOK_LOG_LIST_DATABASE_PASSWORD }}
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-        run: |
-          echo "SECRET_KEY_BASE set"
-          echo "BOOK_LOG_LIST_DATABASE_USER set"
-          echo "BOOK_LOG_LIST_DATABASE_PASSWORD set"
-          echo "DATABASE_HOST set"
+    # steps:
+    #   - name: Checkout code
+    #     uses: actions/checkout@v2
 
-      - name: Run migrations
-        env:
-          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-          BOOK_LOG_LIST_DATABASE_USER: ${{ secrets.BOOK_LOG_LIST_DATABASE_USER }}
-          BOOK_LOG_LIST_DATABASE_PASSWORD: ${{ secrets.BOOK_LOG_LIST_DATABASE_PASSWORD }}
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-        run: |
-          bundle exec rails db:migrate RAILS_ENV=production
+    #   - name: Set up Ruby
+    #     uses: ruby/setup-ruby@v1
+    #     with:
+    #       ruby-version: 3.2.3 # 使用するRubyのバージョンを指定
+    #       bundler-cache: true # Bundlerのキャッシュを有効に
 
-      - name: Deploy to Server
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          USER: ${{ secrets.SSH_USER }}
-          HOST: ${{ secrets.SSH_HOST }}
-          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-        run: |
-          echo "$SSH_PRIVATE_KEY" > private_key.pem
-          chmod 600 private_key.pem
-          ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST "cd /home/ubuntu/www/book_log_list && git pull origin main && bundle install && RAILS_ENV=production bundle exec rake db:migrate && puma -C config/puma.rb -e production"
+    #   - name: Install dependencies
+    #     run: |
+    #       gem install bundler
+    #       bundle install
+
+    #   - name: Set environment variables
+    #     env:
+    #       SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+    #       BOOK_LOG_LIST_DATABASE_USER: ${{ secrets.BOOK_LOG_LIST_DATABASE_USER }}
+    #       BOOK_LOG_LIST_DATABASE_PASSWORD: ${{ secrets.BOOK_LOG_LIST_DATABASE_PASSWORD }}
+    #       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+    #     run: |
+    #       echo "SECRET_KEY_BASE set"
+    #       echo "BOOK_LOG_LIST_DATABASE_USER set"
+    #       echo "BOOK_LOG_LIST_DATABASE_PASSWORD set"
+    #       echo "DATABASE_HOST set"
+
+    #   - name: Run migrations
+    #     env:
+    #       SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+    #       BOOK_LOG_LIST_DATABASE_USER: ${{ secrets.BOOK_LOG_LIST_DATABASE_USER }}
+    #       BOOK_LOG_LIST_DATABASE_PASSWORD: ${{ secrets.BOOK_LOG_LIST_DATABASE_PASSWORD }}
+    #       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+    #     run: |
+    #       bundle exec rails db:migrate RAILS_ENV=production
+
+    #   - name: Deploy to Server
+    #     env:
+    #       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    #       USER: ${{ secrets.SSH_USER }}
+    #       HOST: ${{ secrets.SSH_HOST }}
+    #       SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+    #     run: |
+    #       echo "$SSH_PRIVATE_KEY" > private_key.pem
+    #       chmod 600 private_key.pem
+    #       ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST "cd /home/ubuntu/www/book_log_list && git pull origin main && bundle install && RAILS_ENV=production bundle exec rake db:migrate && puma -C config/puma.rb -e production"
