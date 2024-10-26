@@ -12,4 +12,4 @@ preload_app!
 plugin :tmp_restart
 
 # 本番環境の場合、socketを使う
-bind "unix:///home/ubuntu/www/book_log_list/shared/tmp/sockets/puma.sock" if ENV.fetch("RAILS_ENV") == "production"
+bind 'unix:///home/ubuntu/www/book_log_list/shared/tmp/sockets/puma.sock' if ENV.fetch('RAILS_ENV') == 'production'
