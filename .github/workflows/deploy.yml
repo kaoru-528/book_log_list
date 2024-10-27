@@ -22,6 +22,5 @@ jobs:
             cd ./www/book_log_list
             git pull origin main
             bundle install
-            RAILS_ENV=production
-            bundle exec rake db:migrate
+            bundle exec rails db:migrate
             puma -C config/puma.rb -e production -d
