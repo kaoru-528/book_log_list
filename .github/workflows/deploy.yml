@@ -21,6 +21,3 @@ jobs:
           script: |
             cd ./www/book_log_list
             git pull origin main
-            bundle install
-            bundle exec rails db:migrate
-            puma -C config/puma.rb -e production -d
