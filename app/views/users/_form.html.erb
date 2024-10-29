@@ -12,10 +12,14 @@
     <%= f.label :password_confirmation, "Confirmation" %>
     <%= f.password_field :password_confirmation, class: 'form-control' %>
 
+    <%= f.label :anonymous, "Anonymous" %>
+    <p>If you want to hide your name, you check the box.</p>
+    <%= f.check_box :anonymous %>
+    
     <span class="image">
      <%= f.label :Icon, "Icon" %>
     <%= f.file_field :image, accept: "imgae/jpeg, image/gif, image/png" %>
     </span>
 
-    <%= f.submit "Create your account", class: "btn btn-primary" %>
+    <%= f.submit "Create/Update your account", class: "btn btn-primary" %>
   <% end %>
