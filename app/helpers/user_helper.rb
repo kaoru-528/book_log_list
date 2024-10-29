@@ -7,4 +7,11 @@ module UserHelper
   #     gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}"
   #     image_tag(gravatar_url, alt: user.name, class: "gravatar")
   # end
+  def check_anonymous(user)
+    if user.anonymous && !current_user?(user)
+      user.name = 'Anymouse'
+    else
+      user.name
+    end
+  end
 end
