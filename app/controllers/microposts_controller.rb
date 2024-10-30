@@ -7,7 +7,7 @@ class MicropostsController < ApplicationController
 
   def create
     @micropost = current_user.microposts.build(micropost_params)
-    if @micropost.content.include?('https://www.amazon.co.jp')
+    if @micropost.content.include?('https://www.amazon.co.jp') || @micropost.content.include?('https://amzn.asia')
       scraiping(@micropost.content)
       if @micropost.save
         flash[:success] = 'Book Log created!'
@@ -45,7 +45,7 @@ class MicropostsController < ApplicationController
   private
 
   def micropost_params
-    params.require(:micropost).permit(:content, :image, :comment)
+    params.require(:micropost).permit(:content, :image, :comment, :title)
   end
 
   def correct_user
@@ -56,15 +56,20 @@ class MicropostsController < ApplicationController
   def scraiping(url)
     agent = Mechanize.new
     agent.user_agent_alias = 'Windows Chrome'
-    page = agent.get(url)
-    title_element = page.at('span#productTitle')
-    title = title_element.text.strip if title_element
-    @micropost.title = title
+    begin
+      page = agent.get(url)
+      title_element = page.at('span#productTitle')
+      title = title_element.text.strip if title_element
+      @micropost.title = title
 
-    # 全ての画像要素を取得
-    images = page.search('img')
-    # 任意のvalueを持つsrc属性を持つ画像を探す
-    image = images.find { |img| img['alt'] == title }
-    @micropost.image_url = image['src']
+      # 全ての画像要素を取得
+      images = page.search('img')
+      # 任意のvalueを持つsrc属性を持つ画像を探す
+      image = images.find { |img| img['alt'] == title }
+      @micropost.image_url = image['src']
+    rescue StandardError
+      flash[:danger] = 'Scraiping failed'
+      redirect_to root_url, status: :unprocessable_entity
+    end
   end
 end

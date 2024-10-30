@@ -265,7 +265,6 @@ input {
   }
   .content {
     display: flex;
-    margin-left: 60px;
     img {
       display: block;
       padding: 0 0;
@@ -279,7 +278,6 @@ input {
   .timestamp {
     color: $gray-light;
     display: block;
-    margin-left: 60px;
   }
   .icon {
     float: left;
