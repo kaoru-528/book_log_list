@@ -17,7 +17,7 @@ class MicropostsController < ApplicationController
         render 'static_pages/home', status: :unprocessable_entity
       end
     else
-      flash[:danger] = 'Invalid url'
+      flash[:danger] = 'Invalid Amazon URL'
       redirect_to root_url, status: :unprocessable_entity
     end
   end

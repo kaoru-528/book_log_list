@@ -20,4 +20,10 @@ jobs:
           passphrase: ${{ secrets.SSH_PASS }}
           script: |
             cd ./www/book_log_list
+            pkill -9 ruby
             git pull origin main
+            bundle install
+            RAILS_ENV=production bundle exec rake db:migrate
+            RAILS_ENV=production bundle exec rake assets:precompile
+            puma -C config/puma.rb -e production -d
+            nohup env RAILS_ENV=production bundle exec puma -C config/puma.rb > puma.log 2>&1 &
