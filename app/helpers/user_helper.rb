@@ -3,7 +3,7 @@
 module UserHelper
   def check_anonymous(user)
     if user.anonymous && !current_user?(user)
-      user.name = 'Anymouse'
+      user.name = 'Anonymous'
     else
       user.name
     end
