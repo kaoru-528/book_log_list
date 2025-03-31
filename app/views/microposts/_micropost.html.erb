@@ -1,6 +1,10 @@
 <li id="micropost-<%= micropost.id %>">
     <span class="content">
-        <%= image_tag micropost.image_url, class:'book' %>
+    <%= link_to edit_micropost_path(micropost) do %>
+        <div class="content_post">
+           <%= image_tag micropost.image_url, class:'book' %>
+        </div>
+      <% end %>
         <div class="text">
             <h4>Title</h4>
             <p><%= micropost.title %><p>
