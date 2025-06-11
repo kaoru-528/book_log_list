@@ -1,0 +1,22 @@
+databases:
+  - name: book_log_list_DB
+    databaseName: book_log_list_db
+    user: book_log_list
+    region: singapore
+
+services:
+  - type: web
+    name: book_log_list
+    env: ruby
+    region: singapore
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: book_log_list_DB
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+
